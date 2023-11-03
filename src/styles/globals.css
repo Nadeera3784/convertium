@@ -2,26 +2,70 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+
+.section {
+  height: 100vh;
+  display: block !important;
+  transition: opacity 1s ease;
+  -webkit-transition: opacity 1s ease;
+  -moz-transition: opacity 1s ease;
+  -ms-transition: opacity 1s ease;
+  -o-transition: opacity 1s ease;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hidden {
+  -ms-overflow-style: none;
+  scrollbar-width: none; /* Firefox */
+}
+
+.fp-warning,
+.fp-watermark {
+  z-index: 9999999;
+  position: absolute;
+  bottom: 0;
+  display: none;
+}
+
+.fadein {
+  animation-name: fadein;
+  animation-duration: 0.7s;
+  -webkit-animation-name: fadein;
+  -webkit-animation-duration: 0.7s;
+  -ms-animation-name: fadein;
+  -ms-animation-duration: 0.7s;
+  opacity: 1;
+  z-index: 1;
+}
+
+.fadeout {
+  animation-name: fadeout;
+  animation-duration: 0.7s;
+  -webkit-animation-name: fadeout;
+  -webkit-animation-duration: 0.7s;
+  -ms-animation-name: fadeout;
+  -ms-animation-duration: 0.7s;
+  opacity: 0;
+  z-index: 0;
+}
+
+@keyframes fadein {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+@keyframes fadeout {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }

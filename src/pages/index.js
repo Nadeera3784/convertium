@@ -1,118 +1,283 @@
 import Image from 'next/image'
-import { Inter } from 'next/font/google'
-
-const inter = Inter({ subsets: ['latin'] })
+import Card from '@/components/Card';
+import Slider from 'react-slick';
+import ReactFullpage from '@fullpage/react-fullpage';
+import {useState } from 'react';
+import ThemeSwitch from '@/components/ThemeSwitch';
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import useGetHomePage from '@/hooks/useGetHomePage';
+import Head from 'next/head'
 
 export default function Home() {
+  const [sun, setSun] = useState(true);
+  const apiEndpoint = '/api/v1/home';
+  const { data, loading } = useGetHomePage(apiEndpoint);
+
+  const settings = {
+    arrows: true,
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 3000,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+          infinite: true,
+          dots: true
+        }
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+          initialSlide: 2
+        }
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1
+        }
+      }
+    ]
+  };
+
   return (
-    <main
-      className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
-    >
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/pages/index.js</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <>
+    
+      <Head>
+        <title>Home | Convertium</title>
+        <meta name="description" content="A creative design agency specializing in UI (User Interface) and UX (User Experience) design. We offer innovative and visually engaging design solutions to enhance your digital products. Our design expertise covers a wide range of areas, creating a seamless and delightful user experience for your audience. Let us transform your vision into stunning design."/>
+        <meta name="keywords" content="design agency, creative design, UI design, UX design, user interface, user experience, innovative design, visually engaging, digital products, seamless experience, delightful UX, design solutions, user-centric, stunning design, vision transformation"/>
+        <meta name="author" content="Convertium"/>
+        <meta name="news_keywords" content="design agency, design, UI, UX"/>
+        <meta name='og:title' content='Home | Convertium'/>
+        <meta name='og:type' content='design'/>
+        <meta name='og:url' content='http://www.imdb.com/title/tt0117500/'/>
+        <meta name='og:image' content='http://ia.media-imdb.com/rock.jpg'/>
+        <meta name='og:site_name' content='Convertium'/>
+        <meta name='og:description' content='A creative design agency specializing in UI (User Interface) and UX (User Experience) design. We offer innovative and visually engaging design solutions to enhance your digital products. Our design expertise covers a wide range of areas, creating a seamless and delightful user experience for your audience. Let us transform your vision into stunning design.'/>
+        <meta name="apple-mobile-web-app-title" content="Convertium"/> 
+        <meta name='apple-mobile-web-app-capable' content='yes'/>
+        <meta name='apple-touch-fullscreen' content='yes'/>
+        <meta name='apple-mobile-web-app-status-bar-style' content='black'/>
+      </Head>
+
+    {loading ? (
+        <div className="flex justify-center items-center w-full h-screen bg-black text-white">
+          <h1 className="text-4xl">Loading...</h1>
         </div>
-      </div>
-
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700/10 after:dark:from-sky-900 after:dark:via-[#0141ff]/40 before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
+      ) : (
+        <ReactFullpage
+          scrollingSpeed="1"
+          animateAnchor={true}
+          keyboardScrolling={true}
+          dropEffect={true}
+          easing="easeInOutCubic"
+          afterLoad={(origin, destination, direction) => {
+          }}
+          onLeave={(origin, destination, direction) => {
+          }}
+          afterRender={() => {}}
+          render={({ state, fullpageApi }) => {
+            return (
+              <>
+                <div className="section relative h-screen w-full bg-white text-white flex items-center justify-center">
+                  <div className="z-[100] sticky left-0 right-0 top-0  h-[70px] max-w-[1200px] mx-auto sm:p-10 p-5 flex justify-between items-center">
+                    <div>
+                      <Image
+                        src="/images/logo.png"
+                        alt="logo"
+                        width={60}
+                        height={60}
+                      />
+                    </div>
+                    <ThemeSwitch sun={sun} setSun={setSun} />
+                  </div>
+                  <div
+                    className={`absolute p-5 top-0 left-0 right-0 bottom-0 w-full flex items-center justify-center
+                  ${
+                    state?.destination?.index === 1 &&
+                    state?.direction === 'down'
+                      ? 'fadein'
+                      : 'z-[2]'
+                  }
+                  ${
+                    state?.destination?.index === 0 && state?.direction === 'up'
+                      ? 'fadeout'
+                      : 'z-[1]'
+                  }
+                  `}
+                    style={{
+                      alignItems: 'center',
+                      background: `url('/images/bg2.jpg')`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                    }}
+                  >
+                    <Slider {...settings}>
+                      {data?.section2?.cards?.map((card, i) => (
+                        <Card key={i} data={card} />
+                      ))}
+                    </Slider>
+                  </div>
+                  <div
+                    className={`absolute top-0 left-0 p-5 right-0 bottom-0 w-full flex items-center justify-center
+                  ${
+                    state?.destination?.index === 1 &&
+                    state?.direction === 'down'
+                      ? 'fadeout'
+                      : 'z-[1]'
+                  }
+                  ${
+                    state?.destination?.index === 0 && state?.direction === 'up'
+                      ? 'fadein'
+                      : 'z-[2]'
+                  }                  
+                  `}
+                    style={{
+                      alignItems: 'center',
+                      background: `url('/images/bg1.jpg')`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                    }}
+                  >
+                    <div className="max-w-[768px] text-center">
+                      <h1 className="text-6xl font-semibold flex flex-col justify-center items-center gap-2 dark:text-black">
+                        {data?.section1?.heading}
+                        <span className="h-[2px] bg-slate-400 dark:bg-black w-[120px] inline-block rounded-md" />
+                      </h1>
+                      <p className="text-white dark:text-black mt-4 text-xl">
+                        {data?.section1?.text}
+                      </p>
+                    </div>
+                    <div className="w-[80px] cursor-pointer absolute bottom-0 left-[50%] translate-x-[-50%]">
+                      <Image
+                        src="/images/arrowdown.png"
+                        alt="arrowdown"
+                        width={80}
+                        height={80}
+                        onClick={() => fullpageApi.moveTo(2)}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div
+                  className={`section h-screen w-full`}
+                  style={{
+                    width: '100vw',
+                    height: '100vh',
+                    color: '#fff',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <div className="z-[100] sticky left-0 right-0 top-0   h-[90px] max-w-[1200px] mx-auto sm:p-10 p-5 flex justify-between items-center">
+                    <div>
+                      <Image
+                        src="/images/logo.png"
+                        alt="logo"
+                        width={60}
+                        height={60}
+                      />
+                    </div>
+                    <ThemeSwitch sun={sun} setSun={setSun} />
+                  </div>
+                  <div
+                    className={`absolute top-0 left-0 right-0 bottom-0 w-full flex items-center justify-center
+                  ${
+                    state?.destination?.index === 1 &&
+                    state?.direction === 'down'
+                      ? 'fadeout'
+                      : 'z-[1]'
+                  }
+                  ${
+                    state?.destination?.index === 0 && state?.direction === 'up'
+                      ? 'fadein'
+                      : 'z-[2]'
+                  }                  
+                  `}
+                    style={{
+                      alignItems: 'center',
+                      background: `url('/images/bg1.jpg')`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                    }}
+                  >
+                    <div className="max-w-[768px] text-center">
+                      <h1 className="text-4xl font-semibold flex flex-col justify-center items-center gap-2 dark:text-black">
+                        {data?.section1?.heading}
+                        <span className="h-[2px] bg-slate-400 dark:bg-black w-[120px] inline-block rounded-md" />
+                      </h1>
+                      <p className="text-slate-400 dark:text-black mt-4 text-xl">
+                        {data?.section1?.text}
+                      </p>
+                    </div>
+                     <div className="w-[80px] cursor-pointer absolute bottom-0 left-[50%] translate-x-[-50%]">
+                      <Image
+                        src="/images/arrowdown.png"
+                        alt="arrowdown"
+                        width={80}
+                        height={80}
+                        onClick={() => fullpageApi.moveTo(2)}
+                      />
+                    </div>
+                  </div>
+                  <div
+                    className={`absolute top-0 left-0 right-0 bottom-0 w-full
+                  ${
+                    state?.destination?.index === 1 &&
+                    state?.direction === 'down'
+                      ? 'fadein'
+                      : 'z-[2]'
+                  }
+                  ${
+                    state?.destination?.index === 0 && state?.direction === 'up'
+                      ? 'fadeout'
+                      : 'z-[1]'
+                  }
+                  `}
+                    style={{
+                      alignItems: 'center',
+                      background: `url('/images/bg2.jpg')`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                    }}
+                  >
+                    <div
+                      className="p-10 sm:p-10"
+                      style={{
+                        maxWidth: '960px',
+                        marginLeft: 'auto',
+                        marginTop: '100px',
+                      }}
+                    >
+                      <h1 className="text-3xl text-right mb-3 dark:text-black">
+                        {data?.section2?.heading}
+                      </h1>
+                      <Slider {...settings}>
+                        {data?.section2?.cards?.map((card, i) => (
+                          <Card key={i} data={card} />
+                        ))}
+                      </Slider>
+                    </div>
+                  </div>
+                </div>
+              </>
+            );
+          }}
         />
-      </div>
-
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Discover and deploy boilerplate example Next.js&nbsp;projects.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
+      )}
+    </>
+  );
 }
