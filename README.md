@@ -19,11 +19,11 @@ npm run dev
 Dillinger is currently extended with the following plugins.
 Instructions on how to use them in your own application are linked below.
 
-| Plugin | README |
-| ------ | ------ |
-| @fullpage/react-fullpage | [plugins/dropbox/README.md][PlDb] |
-| react-slick | [plugins/github/README.md][PlGh] |
-| slick-carousel | [plugins/googledrive/README.md][PlGd] |
+| Plugin | 
+| ------ | 
+| @fullpage/react-fullpage|
+| react-slick |
+| slick-carousel |
 
 ## License
 
