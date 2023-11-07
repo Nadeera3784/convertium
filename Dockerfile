@@ -1,23 +1,36 @@
-# Use a Node.js base image
-FROM node:20
-
-# Set the working directory in the image
+FROM node:20-alpine AS deps
+RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-# Copy the package.json and package-lock.json files to the image
-COPY package*.json ./
+COPY package.json package-lock.json ./
+RUN  npm install 
 
-# Install the application's dependencies
-RUN npm install
-
-# Copy the application's source code to the image
+FROM node:18-alpine AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Creating production build
+ENV NEXT_TELEMETRY_DISABLED 1
+
 RUN npm run build
 
-# Specify the command to run the application
-CMD [ "npm", "start" ]
+FROM node:20-alpine AS runner
+WORKDIR /app
 
-# Expose the port on which the application will run
+ENV NODE_ENV production
+ENV NEXT_TELEMETRY_DISABLED 1
+
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json ./package.json
+
+USER nextjs
+
 EXPOSE 3000
+
+ENV PORT 3000
+
+CMD ["npm", "start"]
