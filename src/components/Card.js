@@ -1,5 +1,3 @@
-import React from 'react';
-
 const Card = ({ data }) => {
   return (
     <div className="border border-slate-500 rounded-tl-3xl ml-3 rounded-br-3xl p-5 h-[300px] bg-slate-300 dark:bg-black">

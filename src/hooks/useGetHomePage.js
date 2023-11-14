@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-function useGetHomePage(apiEndpoint) {
+function useGetHomePage() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -9,10 +9,10 @@ function useGetHomePage(apiEndpoint) {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await axios.get(apiEndpoint);
+        const response = await axios.get('/api/v1/home');
 
         if (response.status !== 200) {
-          throw new Error(`Failed to fetch data from ${apiEndpoint}`);
+          throw new Error(`Failed to fetch data`);
         }
 
         setData(response.data);
@@ -24,7 +24,7 @@ function useGetHomePage(apiEndpoint) {
     }
 
     fetchData();
-  }, [apiEndpoint]);
+  }, []);
 
   return { data, loading, error };
 }
