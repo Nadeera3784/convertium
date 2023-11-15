@@ -16,7 +16,7 @@ jobs:
         with:
           node-version: '20.x'
       - name: Install Dependencies
-        run: npm ci
+        run: npm install --production
       - name: Run linters
         run: npm run lint
 
